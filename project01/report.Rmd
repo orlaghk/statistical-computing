@@ -1,0 +1,295 @@
+---
+title: 'StatComp Project 1:  3D printer materials estimation'
+author: "Orlagh Keane (s2084384)"
+output:
+  html_document:
+    number_sections: yes
+  pdf_document:
+    number_sections: yes
+header-includes:
+  - \newcommand{\bm}[1]{\boldsymbol{#1}}
+  - \newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+---
+
+```{r setup, include = FALSE}
+# Modify this setup code chunk to set options
+# or add extra packages etc if needed.
+# See the project instructions for more details
+# on what code to show, and where/how.
+
+# Set default code chunk options
+knitr::opts_chunk$set(
+  echo = TRUE,
+  eval = TRUE
+)
+
+suppressPackageStartupMessages(library(tidyverse))
+theme_set(theme_bw())
+
+# To give the same random number sequence every time the document is knit:ed,
+# making it easier to discuss the specific numbers in the text:
+set.seed(12345L)
+```
+
+```{r code=readLines("code.R"), eval=TRUE, echo=FALSE}
+# Do not change this code chunk
+# Load function definitions
+source("code.R")
+```
+
+
+# The Data
+
+To look closely at the variability of CAD_Weight across different materials used in 3D printing I have created the box-plot below. One noticeable observation is the wide range of variability that each material has, which can be seen on from the length of the box plots below, with materials like Red and Neon Blue displaying particularly large IQRs. For instance, Neon blue shows an IQR of 25.5, while Red has an much larger IQR of 64. This indicates that objects printed with these materials can vary significantly in weight. In contrast, Magenta and Neon Pink have relatively narrow IQRs, standing at 4.25 and 6.5, respectively, suggesting a more consistent weight range for objects printed using these materials.
+
+Further analysis of the mean CAD_Weight across different materials highlights additional disparities. Notably, Red, Neon Pink and Magenta exhibit higher mean CAD_Weights compared to other materials, with Red showing a mean of 51.91, Neon Pink a mean of 40.67 and Magenta a mean of 40.20 meanining these tend to be heavier. On the other hand, Neon Pink boasts the smallest standard deviation (SD) of 6.807, indicating lower variability in CAD_Weight around the mean compared to other materials. In contrast, Red has the highest variance at 956.75 signifying a greater degree of variability in CAD_Weight values.
+
+These results suggest that the choice of material in 3D printing can significantly influence the weight of the printed objects, and the each material has a different range of possible weights. Certain materials like Black and Red tend to produce objects with a wide range of weights, while others like Neon Pink and Black yield more consistent weights. Also, materials like Red, Neon Pink and Magenta generally result in heavier objects, with Magenta and Neon Pink having more uniformity in weight compared to others. 
+
+These results are reflected in the graph and table below.
+
+```{r eval=TRUE, echo=FALSE}
+# Load the data
+load("filament1.rda")
+
+# Plot the data
+library(ggplot2)
+theme_set(theme_bw())
+
+# Define a color palette
+my_colors <- c("black", "green", "magenta", "#00CCFF", "#FF3399", "red")
+
+# Scatter plot
+p <- ggplot(filament1) +
+  geom_point(aes(x = Material, y = CAD_Weight)) +
+  xlab("Material") +
+  ylab("CAD Weight") +
+  ggtitle("Variability of CAD Weight vs Material")
+
+# Add boxplots
+p + geom_boxplot(aes(x = Material, y = CAD_Weight, fill = Material), 
+                 alpha = 0.5, color = "black", width = 0.3) +
+  scale_fill_manual(values = my_colors) +
+  theme(legend.position = "none")
+
+```
+```{r eval=TRUE, echo=FALSE}
+
+# Calc the summary statistics for each Material
+material_stats <- aggregate(CAD_Weight ~ Material, data = filament1, 
+                            FUN = function(x) c(Mean = mean(x), 
+                                               IQR = IQR(x), 
+                                               SD = sd(x), 
+                                               Var = var(x)))
+
+library(dplyr)
+
+# Compute summary stats
+material_stats <- filament1 %>%
+  group_by(Material) %>%
+  summarize(
+    Mean = mean(CAD_Weight),
+    IQR = IQR(CAD_Weight),
+    SD = sd(CAD_Weight),
+    Var = var(CAD_Weight)
+  )
+
+knitr::kable(material_stats)
+
+
+```
+
+
+# Classical estimation 
+
+
+Since we want to understand the relationship between the calculated weight, CAD_Weight, of an object using CAD software and its actual weight, Actual_Weight, after 3D printing, we will create two linear models, Model A and Model B to capture this relationship.
+
+Model A: y_i ~ Normal[β_1 + β_2x_i, exp(β_3 + β_4x_i)]
+Model B: y_i ~ Normal[β_1 + β_2x_i, exp(β-3) + exp(β_4)x_i^2]
+
+
+Model A considers an additive error approximation, the observed weight, y_i, is assumed to follow a Normal distribution with mean β_1 + β_2x_i and standard deviation exp(β_3 + β_4x_i). On the other hand, Model B considers a relative error approximation, where the observed weight follows a Normal distribution with the same mean β_1 + β_2x_i and standard deviation exp(β_3) + exp(β_4)x_i.
+
+From the theory of negative log-likelihood functions, it is known that the expected Hessian is always positive definite, and we can use the observed Hessian H(theta), called Fisher Scoring. We can use this to find the 90% confidence interval as below.The square root of the diagonal elements of S gives the standard errors for each parameter. Lower and upper bounds for the 90% confidence interval are calculated as the estimated value plus or minus the product of the Z-score and the standard error.
+
+
+```{r eval=TRUE, echo=TRUE}
+# Estimate Model A and B
+fit_A <- filament1_estimate(filament1, "A")
+fit_B <- filament1_estimate(filament1, "B")
+
+#print(fit_A)
+#print(fit_B)
+
+# Calculate standard errors for hessian at A and B 
+se_A <- sqrt(diag(solve(fit_A$hessian)))
+se_B <- sqrt(diag(solve(fit_B$hessian)))
+
+#Calculate z norm for 90% interval
+z <- qnorm(0.95)
+
+#Calculate the lower and upper bounds
+ci_A <- matrix(NA, nrow = 4, ncol = 2)
+ci_B <- matrix(NA, nrow = 4, ncol = 2)
+
+ci_A[,1] <- fit_A$parameters - z * se_A
+ci_A[,2] <- fit_A$parameters + z * se_A
+
+ci_B[,1] <- fit_B$parameters - z * se_B
+ci_B[,2] <- fit_B$parameters + z * se_B
+
+#Create df for the knitr table
+conf_intervals <- data.frame(
+  Model = c("A", "B"),
+  β_1_Lower = c(ci_A[1,1], ci_B[1,1]),
+  β_1_Upper = c(ci_A[1,2], ci_B[1,2]),
+  β_2_Lower = c(ci_A[2,1], ci_B[2,1]),
+  β_2_Upper = c(ci_A[2,2], ci_B[2,2]),
+  β_3_Lower = c(ci_A[3,1], ci_B[3,1]),
+  β_3_Upper = c(ci_A[3,2], ci_B[3,2]),
+  β_4_Lower = c(ci_A[4,1], ci_B[4,1]),
+  β_4_Upper = c(ci_A[4,2], ci_B[4,2])
+)
+
+
+knitr::kable(conf_intervals, caption = "90% Confidence Intervals for Model A and B")
+
+```
+
+For Model A, all confidence intervals are fairly narrow and more centered around the estimates, which indicates that the model has relatively good precision in estimating the parameters. The width of the intervals for β1 and β2 is quite small, indicating higher confidence in the estimates for these parameters.
+
+For Model B, the confidence intervals are much wider, especially for β3 and β4, which indicates a lower precision or less certainty in the parameter estimates.The model might not be as effective in explaining the data or there maybe more significant variations in the data that the model can't account for.
+
+The confidence intervals for β3 in Model B are so wide that they span a large range of values from -98.038348 to 71.035388, which suggests its unstable and unreliable in the model's estimation.
+
+
+# Bayesian estimation
+
+We are using a Bayesian model to describing the actual weight (yi) based on the CAD weight (xi) for an observation i with
+yi ∼ Normal[β1 + β2xi, β3 + β4x2i ]
+
+Independent prior distributions are assigned to values of theta:  θ = [θ1, θ2, θ3, θ4] = [β1, β2, log(β3), log(β4)]
+
+θ1 ∼ Normal(0, γ1)
+θ2 ∼ Normal(1, γ2)
+θ3 ∼ LogExp(γ3)
+θ4 ∼ LogExp(γ4)
+
+Using functions below :
+
+log_prior_density : Uses dnorm and dlogexp to evaluate the log of the joint prior density for the four theta parameters.
+
+log_like : Evaluates the log of the post density using dnorm.
+
+log_posterior_density : Evaluates the observation log-likelihood for the model using log_prior_density and log_like.
+
+posterior_mode : Finds the mode (mu) of the log-posterior-density, evaluates the Hessian at the mode, as well as the negated Hessian S, providing a Gaussian approximation to the posterior distribution for θ with the expectation (mu) and covariance matrix (S).
+
+The mode, Hessian and S can be seen in the tables below.
+```{r eval=TRUE, echo=TRUE}
+# Set starting values for theta and gamma parameters
+theta_start <- c(0, 0, 0, 0)
+params <- c(1, 1, 1, 1)
+
+# Find posterior mode
+post_mode <- posterior_mode(theta_start, filament1$CAD_Weight, filament1$Actual_Weight, params)
+
+# Display posterior mode
+mode_result <- post_mode$mode
+mode_df <- data.frame(
+  theta1 = mode_result[1],
+  theta2 = mode_result[2],
+  theta3 = mode_result[3],
+  theta4 = mode_result[4]
+)
+rownames(mode_df) <- "mu"
+thetas <- c('theta1', 'theta2', 'theta3', 'theta4')
+hessian_result <- post_mode$hessian
+rownames(hessian_result) <- thetas
+colnames(hessian_result) <- thetas
+
+s_result <- post_mode$S
+rownames(s_result) <- thetas
+colnames(s_result) <- thetas
+
+knitr::kable(mode_df, caption = 'Posterior Mode')
+knitr::kable(hessian_result, caption = 'Hessian')
+knitr::kable(s_result, caption = 'S matrix')
+
+```
+
+Next, using the do-importance() method, we find N = 1000 vectors of theta and use multivariate Normal approximation to find the  corresponding beta vectors. The function also finds the normalised log-importance-weights, so that sum(exp(log_weights)) is 1.
+
+Below find an example of the values found in the do-importance(). Firstly we construct the 90% Bayesian credible interval for each βj.
+
+```{r eval=TRUE, echo=TRUE}
+
+# Get the posterior mode
+post_mode <- posterior_mode(theta_start, filament1$CAD_Weight, filament1$Actual_Weight, params)
+
+# Extract the mode and the S matrix x, y, and give the N and gamma params
+N <- 10000
+mu <- post_mode$mode
+S <- post_mode$S
+x <- filament1$CAD_Weight
+y <- filament1$Actual_Weight
+params <- c(1, 1, 1, 1)
+
+# Get the importance samples 
+imp_sample <- do_importance(N, mu, S, x, y, params)
+
+# Print the results
+knitr::kable(imp_sample[1:5,], caption = 'Importance samples')
+
+# Gets the CI and the approximate val
+CI <- function(y, prob, weights) {
+  q <- wquantile(y, prob, weights = weights)
+  #print(q)
+  lower_limit <- q[1]
+  upper_limit <- q[2]
+  approximate <- sum(weights * y)
+  return(data.frame(lower_limit, upper_limit, approximate))
+}
+
+imp_sample_long <- pivot_longer(
+  imp_sample,
+  starts_with("beta"),
+  names_to = "Name",
+  values_to = "Value"
+)
+
+# Gets the summary stats similarly to the hints page
+intervals <-
+  imp_sample_long %>%
+  group_by(Name) %>%
+  summarise(CI(Value, c(0.05, 0.95), weights = exp(log_weights)),
+            .groups = "drop")
+
+knitr::kable(intervals, caption = '90% Confidence Interval')
+```
+The table above tells us that beta1, beta2 and beta3 the actual object weights are larger than those calculated by the CAD software. The over-estimation means that they would often use more material then expected and this could cause an unexpected material shortage. Looking specifically at beta2, there is a consistent 7% - 8% overuse of material, given this is such a high percentage, this would be a cause for concern.
+
+The plot below compares the empirical cumulative distribution functions of the raw importance samples, "Unweighted", with the importance weighted samples, "Weighted". The ECDFs and EWCDFs are depicted separately for each model parameter (β1, β2, β3, and β4), allowing for individual assessment of the distribution characteristics. 
+
+
+```{r eval=TRUE, echo=TRUE}
+  suppressWarnings({
+    
+  library(ggplot2)
+  library(tidyr)
+  
+  # ggplot the weighted and unweighted data 
+  p <- ggplot(imp_sample_long, aes(x = Value)) +
+    stat_ecdf(aes(color = "unweighted")) +
+    stat_ewcdf(aes(weights = exp(log_weights), color = "weighted")) +
+    facet_wrap(vars(Name),  scales = "free") +
+    ggtitle("Empirical Weighted CDFs with Unweighted CDFs") 
+  
+  print(p)
+
+})
+
+```
+
+Looking at the plot above, the ECDFs for beta1, beta2, and beta4 are smoother and more linear compared to beta3, suggesting that these parameters are closer to a normal distribution and beta3 a distinctly right-skewed shape, indicating that its distribution is skewed towards higher value. These results correspond to the previous table, which is expected.

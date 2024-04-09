@@ -1,0 +1,733 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\newcommand{\bm}[1]{\boldsymbol{#1}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={StatComp Project 1: 3D printer materials estimation},
+  pdfauthor={Your Name (s0000000)},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{StatComp Project 1: 3D printer materials estimation}
+\author{Your Name (s0000000)}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{verbatim}
+## NULL
+\end{verbatim}
+
+\includegraphics{report_files/figure-latex/unnamed-chunk-1-1.pdf}
+
+\begin{verbatim}
+## $parameters
+## [1] -0.08932974  1.07920922 -1.90378021  0.05569486
+## 
+## $hessian
+##              [,1]          [,2]         [,3]          [,4]
+## [1,] 1.497239e+02  2506.6240441 1.594504e-02     0.4571632
+## [2,] 2.506624e+03 70498.9820956 4.592262e-01  -237.9179862
+## [3,] 1.594504e-02     0.4592262 4.301321e+01  1493.0697185
+## [4,] 4.571632e-01  -237.9179862 1.493070e+03 64401.1139825
+\end{verbatim}
+
+\begin{verbatim}
+## $parameters
+## [1]  -0.1612845   1.0828591 -13.5014797  -6.6136018
+## 
+## $hessian
+##               [,1]          [,2]          [,3]          [,4]
+## [1,]  1.046323e+03  4.390261e+03 -1.891388e-03  1.667907e-03
+## [2,]  4.390261e+03  6.408287e+04 -3.596977e-03  2.941629e-04
+## [3,] -1.891388e-03 -3.596977e-03  3.785878e-04 -4.111378e-05
+## [4,]  1.667907e-03  2.941629e-04 -4.111378e-05  4.299943e+01
+\end{verbatim}
+
+\begin{verbatim}
+## [1] -4.250559
+\end{verbatim}
+
+\begin{verbatim}
+## [1] -182.7504
+\end{verbatim}
+
+\begin{verbatim}
+## [1] -187.0009
+\end{verbatim}
+
+\begin{verbatim}
+## $mode
+## [1] -0.08571000  0.01445975 -0.41467604 -1.80060467
+## 
+## $hessian
+##              [,1]       [,2]       [,3]       [,4]
+## [1,] -127.7348578  -8.367970  -0.143434  0.2198937
+## [2,]   -8.3679700 -99.576600   2.898706 -1.9042061
+## [3,]   -0.1434340   2.898706 -37.915838 -4.2745728
+## [4,]    0.2198937  -1.904206  -4.274573 -3.2018876
+## 
+## $S
+##               [,1]          [,2]         [,3]         [,4]
+## [1,]  0.0078764786 -0.0006923513 -0.000223817  0.001251477
+## [2,] -0.0006923513  0.0103146330  0.001751764 -0.008520435
+## [3,] -0.0002238170  0.0017517643  0.031345967 -0.042904552
+## [4,]  0.0012514774 -0.0085204349 -0.042904552  0.374747221
+\end{verbatim}
+
+\begin{verbatim}
+##            beta1        beta2      beta3     beta4   log_weights
+## 1   -2.000929238  0.333777197  3.2262650 7.8423556   -88.4374544
+## 2   -1.376861598 -1.150855566  0.4937029 0.3485214  -174.8743558
+## 3   -0.645743723 -0.185377968  0.3008264 7.6673585   -47.4262442
+## 4    0.107774745 -0.084108101  1.6415151 1.0381239    -9.0526868
+## 5   -0.132088037  1.476787424  0.8049057 0.2770376   -63.6871075
+## 6    0.385667890 -0.351512874  0.5934537 0.3436501    -2.8440404
+## 7    0.428365903 -0.174018234  1.6747564 0.7910728   -12.3049519
+## 8   -0.658503426  1.250236604  0.7620343 2.5804195   -34.4545462
+## 9   -1.201582430 -0.466116096  0.7638748 0.6764036   -53.8690321
+## 10   1.348707012 -0.022764701  1.2766326 0.3897025   -60.4334268
+## 11  -0.729217277  0.998068909  3.5200728 3.4863791   -52.1209175
+## 12  -1.380637050  2.049960694  2.7645361 0.9736363   -82.7604295
+## 13   0.703607779 -0.971385229  0.3341530 1.0502733   -54.4533089
+## 14  -1.198495857  0.190018999  3.6608886 0.3556267   -41.4963344
+## 15  -0.738440754  0.046563939  0.3614628 0.6816193   -23.6584221
+## 16   0.872755412  0.969545014  1.4679203 0.1569927   -50.5153871
+## 17  -0.053996737  1.064773214  2.2551016 0.8262842   -27.7860741
+## 18  -2.699929809  0.060966639  1.7749135 1.0468688  -149.9692628
+## 19   0.157412540  0.431565373  0.6726368 3.7060930   -20.3742449
+## 20   0.470393400 -1.242670271  3.9811688 3.3349542   -57.7914781
+## 21   0.824073964 -1.662629402  0.5659179 1.8879920   -67.1556659
+## 22   0.043722008  0.348012304 11.7000551 0.4411456   -79.9411080
+## 23  -2.113200115  0.273695272  0.5027829 1.5621156  -187.0346407
+## 24  -0.812384724  2.212055480  0.8836396 0.6204343  -122.5127947
+## 25  -0.166261491  0.862563384  1.1022356 0.1967903   -12.0146975
+## 26  -0.004620768  0.760242168  1.0397610 2.0856324   -16.3879075
+## 27  -0.146472627 -0.057887335  1.6199082 2.6991682   -21.5308551
+## 28  -1.246395498 -0.033487525  0.9314971 0.4681715   -45.4241018
+## 29  -1.034359361 -0.630731954  1.7982388 0.6594675   -34.8297398
+## 30  -0.784887810  0.163416319  0.2903366 2.8458841   -35.3167582
+## 31  -0.484595416  0.189128812  1.0523296 0.9997594    -4.4689608
+## 32   1.809382042 -0.825327957  3.1439201 1.0320769   -76.9727586
+## 33  -0.835205805 -0.068763649  2.1101767 0.6534307   -21.8013842
+## 34  -0.772082235  0.152764107  2.6874609 0.9291749   -27.5241732
+## 35  -1.387026554 -1.306675904  0.4637567 0.5903096  -168.6112335
+## 36  -0.021427065  0.670498071  0.6475126 0.3282828    -3.7646044
+## 37   0.607105995  0.275456969  3.1814818 0.1859122   -26.8968794
+## 38   0.087319089  1.353361894  2.0630259 0.4349375   -37.6193357
+## 39   0.732528487 -0.871926870  0.6354655 3.2789862   -38.6866047
+## 40  -0.290145312  0.828546145  0.7473455 0.2067257   -13.9567246
+## 41  -0.848815697 -1.088519862  0.6161341 0.7144007   -55.2541819
+## 42  -0.153357891 -0.243247229  6.6339609 0.2500740   -51.2010840
+## 43  -0.414824301  0.349081528  5.0959304 1.0925582   -45.6951832
+## 44   1.239150708 -1.644555536  4.2476102 0.5012952   -76.9701991
+## 45  -0.276431085 -1.109418760  1.1432434 5.9616009   -42.0863941
+## 46   2.422163355 -1.076828902  1.6257043 4.0089194  -129.3161340
+## 47  -0.195656817 -0.218174798  0.7372871 1.8181740    -4.0616842
+## 48   1.397429411  0.687619761  1.3773867 0.7394342   -71.8717440
+## 49   0.498348686 -0.549536918  0.7563459 2.9937101   -24.2278874
+## 50   0.442013088  0.241016294  0.7744458 2.5371284   -18.9528138
+## 51   1.334912585 -0.869271764  1.0570552 1.0502906   -68.9788394
+## 52  -0.578355728 -0.998738656  0.9975702 1.9261282   -27.0870640
+## 53   1.476842279 -1.909152788  0.4953754 0.7323987  -211.9864020
+## 54  -1.663157031 -0.750533442  0.4596216 0.4855031  -191.6263411
+## 55  -2.188834599  0.213418550  0.5315686 4.5744716  -152.2101796
+## 56   0.795955949 -1.453529565  1.1033990 0.5522409   -62.9767707
+## 57   0.888281169  0.053070415  0.5729117 1.5502203   -39.6293862
+## 58   0.152608159 -0.164617582  7.5375004 0.5889666   -59.2337278
+## 59  -0.470786973 -1.545936924  0.9602835 2.4359975   -40.8358392
+## 60  -2.071387851 -0.250065120  0.3067720 4.2288803  -188.3672997
+## 61   1.357895539  0.334502847  4.1759341 0.4200767   -56.0461193
+## 62   0.950651725 -0.585011509  1.3784470 0.7412658   -33.8561514
+## 63  -0.278543083  0.546115158  0.2714924 0.7780889   -10.1965395
+## 64   0.171007374 -0.403467479  1.1103324 0.7269622    -1.6913893
+## 65   1.618343936  0.714188601 19.4114941 0.4515462  -117.0294718
+## 66   0.814365915  2.098030810  1.3511824 0.3385528  -131.6625759
+## 67  -1.006322502 -0.035414565  3.7029299 2.1178480   -47.4979122
+## 68  -2.138368328 -0.700354109  0.9909844 0.2326702  -193.0616472
+## 69   0.694529646 -2.461335475  1.1540642 0.6762299  -129.6866601
+## 70  -0.491164086 -0.283647452  1.3699782 1.4863546   -13.8118424
+## 71  -0.225603711 -1.924950430  0.2371104 0.2300042  -282.9222315
+## 72   0.761863447 -0.243614982  1.3095409 0.2103616   -18.1388263
+## 73  -0.535588007  0.562451973  0.8366695 0.8912449    -8.1063461
+## 74  -0.072061472  1.210909807  0.5406966 1.9662466   -24.6926804
+## 75   0.898599606 -1.189317904  1.1289171 0.9888410   -47.6834663
+## 76   1.029140719  0.914774868  0.9975467 1.1456928   -57.0282476
+## 77  -0.720153545 -0.198124330  0.3572895 0.3802388   -29.1607005
+## 78  -1.220813089  0.836207704  3.0494822 0.6616988   -45.5030315
+## 79  -1.128977398 -0.087931332  9.4112303 7.7007149   -95.8199223
+## 80  -1.719800337 -0.356906656  4.6333516 0.9624780   -66.6802396
+## 81   1.597413242 -0.333585393  1.8312264 1.2513729   -67.3088879
+## 82   3.229069495  0.920452567  0.2992311 0.5466857 -1075.9090881
+## 83   0.370235285 -1.901000647  0.1645715 0.3256857  -277.5497718
+## 84  -0.347929607  1.238902149  0.7601819 1.1763080   -26.7847838
+## 85  -0.064606910 -0.705237097  3.9047637 0.3340338   -34.8976809
+## 86  -0.228433519 -0.347828081  1.7025525 4.9889954   -36.6982217
+## 87   0.513814526  1.382373161  2.1449088 0.5354839   -46.4730749
+## 88   0.081543800  1.376079111  0.2098703 1.3837133   -55.0769327
+## 89  -0.156790317  0.877783861  2.1173527 1.3512815   -24.9180382
+## 90   1.492811117 -1.525493800  2.4861058 0.2060715   -95.0164200
+## 91   0.587716257  0.089642296  2.6307307 1.0820013   -28.0468004
+## 92  -1.568699836 -2.007823184  1.7176782 0.9292508  -121.7759197
+## 93  -0.571018394 -0.311068460  0.5109850 0.8544131    -7.5469796
+## 94  -0.931305071 -1.983009479  0.8028400 2.8441830   -74.3766385
+## 95   1.877329566  0.002606196  0.9224981 2.6194969  -112.1541947
+## 96   0.053571017 -0.434898409  0.1759954 0.2826077   -29.3729428
+## 97   0.406308512 -1.459653968  2.8532462 0.2601673   -52.4335459
+## 98  -0.193570558 -0.002335957  0.9872522 1.1640989    -0.3499919
+## 99   0.598511131 -0.126212437  0.7799421 1.1738951   -14.4878548
+## 100 -0.433641942  1.537412419  0.1141495 2.7926881   -67.1415035
+\end{verbatim}
+
+\hypertarget{classical-estimation}{%
+\section{Classical estimation}\label{classical-estimation}}
+
+\hypertarget{bayesian-estimation}{%
+\section{Bayesian estimation}\label{bayesian-estimation}}
+
+\hypertarget{code-appendix}{%
+\section{Code appendix}\label{code-appendix}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\textquotesingle{} Orlagh Keane, S2084384}
+\CommentTok{\#\textquotesingle{} Add your own function definitions on this file.}
+
+\CommentTok{\#\textquotesingle{} Log{-}Exponential density}
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\#\textquotesingle{} Compute the density or log{-}density for a Log{-}Exponential (LogExp)}
+\CommentTok{\#\textquotesingle{} distribution}
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\#\textquotesingle{} @param x vector of quantiles}
+\CommentTok{\#\textquotesingle{} @param rate vector of rates}
+\CommentTok{\#\textquotesingle{} @param log logical; if TRUE, the log{-}density is returned}
+
+\NormalTok{dlogexp }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x, }\AttributeTok{rate =} \DecValTok{1}\NormalTok{, }\AttributeTok{log =} \ConstantTok{FALSE}\NormalTok{) \{}
+\NormalTok{  result }\OtherTok{\textless{}{-}} \FunctionTok{log}\NormalTok{(rate) }\SpecialCharTok{+}\NormalTok{ x }\SpecialCharTok{{-}}\NormalTok{ rate }\SpecialCharTok{*} \FunctionTok{exp}\NormalTok{(x)}
+  \ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\NormalTok{log) \{}
+    \FunctionTok{exp}\NormalTok{(result)}
+\NormalTok{  \}}
+\NormalTok{  result}
+\NormalTok{\}}
+
+\CommentTok{\#\textquotesingle{} Log{-}Sum{-}Exp}
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\#\textquotesingle{} Convenience function for computing log(sum(exp(x))) in a}
+\CommentTok{\#\textquotesingle{} numerically stable manner}
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\#\textquotesingle{} @param x numerical vector}
+
+\NormalTok{log\_sum\_exp }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) \{}
+\NormalTok{  max\_x }\OtherTok{\textless{}{-}} \FunctionTok{max}\NormalTok{(x, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{  max\_x }\SpecialCharTok{+} \FunctionTok{log}\NormalTok{(}\FunctionTok{sum}\NormalTok{(}\FunctionTok{exp}\NormalTok{(x }\SpecialCharTok{{-}}\NormalTok{ max\_x)))}
+\NormalTok{\}}
+
+
+\CommentTok{\#\textquotesingle{} wquantile }
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\#\textquotesingle{} Calculates empirical sample quantiles with optional weights, for given probabilities. }
+\CommentTok{\#\textquotesingle{} Like in quantile(), the smallest observation corresponds to a probability of 0 and the largest to a probability of 1. }
+\CommentTok{\#\textquotesingle{} Interpolation between discrete values is done when type=7, as in quantile(). }
+\CommentTok{\#\textquotesingle{} Use type=1 to only generate quantile values from the raw input samples.}
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\#\textquotesingle{} @param x numeric vector whose sample quantiles are wanted}
+\CommentTok{\#\textquotesingle{} NA and NaN values are not allowed in numeric vectors unless na.rm is TRUE}
+\CommentTok{\#\textquotesingle{} @param probs numeric vector of probabilities with values in [0,1]}
+\CommentTok{\#\textquotesingle{} @param na.rm logical; if true, any NA and NaN\textquotesingle{}s are removed from x before the quantiles are computed}
+\CommentTok{\#\textquotesingle{} @param type numeric, 1 for no interpolation, or 7, for interpolated quantiles. Default is 7}
+\CommentTok{\#\textquotesingle{} @param weights    numeric vector of non{-}negative weights, the same length as x, or NULL. }
+\CommentTok{\#\textquotesingle{} The weights are normalised to sum to 1. }
+\CommentTok{\#\textquotesingle{} If NULL, then wquantile(x) behaves the same as quantile(x), with equal weight for each sample value}
+
+\NormalTok{wquantile }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{ (x, }\AttributeTok{probs =} \FunctionTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\FloatTok{0.25}\NormalTok{), }\AttributeTok{na.rm =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{type =} \DecValTok{7}\NormalTok{, }
+                       \AttributeTok{weights =} \ConstantTok{NULL}\NormalTok{, ...) }
+\NormalTok{\{}
+  \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{is.null}\NormalTok{(weights) }\SpecialCharTok{||}\NormalTok{ (}\FunctionTok{length}\NormalTok{(weights) }\SpecialCharTok{==} \DecValTok{1}\NormalTok{)) \{}
+\NormalTok{    weights }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{length}\NormalTok{(x))}
+\NormalTok{  \}}
+  \FunctionTok{stopifnot}\NormalTok{(}\FunctionTok{all}\NormalTok{(weights }\SpecialCharTok{\textgreater{}=} \DecValTok{0}\NormalTok{))}
+  \FunctionTok{stopifnot}\NormalTok{(}\FunctionTok{length}\NormalTok{(weights) }\SpecialCharTok{==} \FunctionTok{length}\NormalTok{(x))}
+  \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{length}\NormalTok{(x) }\SpecialCharTok{==} \DecValTok{1}\NormalTok{) \{}
+    \FunctionTok{return}\NormalTok{(}\FunctionTok{rep}\NormalTok{(x, }\FunctionTok{length}\NormalTok{(probs)))}
+\NormalTok{  \}}
+\NormalTok{  n }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(x)}
+\NormalTok{  q }\OtherTok{\textless{}{-}} \FunctionTok{numeric}\NormalTok{(}\FunctionTok{length}\NormalTok{(probs))}
+\NormalTok{  reorder }\OtherTok{\textless{}{-}} \FunctionTok{order}\NormalTok{(x)}
+\NormalTok{  weights }\OtherTok{\textless{}{-}}\NormalTok{ weights[reorder]}
+\NormalTok{  x }\OtherTok{\textless{}{-}}\NormalTok{ x[reorder]}
+\NormalTok{  wecdf }\OtherTok{\textless{}{-}} \FunctionTok{pmin}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{cumsum}\NormalTok{(weights)}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{(weights))}
+  \ControlFlowTok{if}\NormalTok{ (type }\SpecialCharTok{==} \DecValTok{1}\NormalTok{) \{}
+\NormalTok{  \}}
+  \ControlFlowTok{else}\NormalTok{ \{}
+\NormalTok{    weights2 }\OtherTok{\textless{}{-}}\NormalTok{ (weights[}\SpecialCharTok{{-}}\NormalTok{n] }\SpecialCharTok{+}\NormalTok{ weights[}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{])}\SpecialCharTok{/}\DecValTok{2}
+\NormalTok{    wecdf2 }\OtherTok{\textless{}{-}} \FunctionTok{pmin}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{cumsum}\NormalTok{(weights2)}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{(weights2))}
+\NormalTok{  \}}
+  \ControlFlowTok{for}\NormalTok{ (pr\_idx }\ControlFlowTok{in} \FunctionTok{seq\_along}\NormalTok{(probs)) \{}
+\NormalTok{    pr }\OtherTok{\textless{}{-}}\NormalTok{ probs[pr\_idx]}
+    \ControlFlowTok{if}\NormalTok{ (pr }\SpecialCharTok{\textless{}=} \DecValTok{0}\NormalTok{) \{}
+\NormalTok{      q[pr\_idx] }\OtherTok{\textless{}{-}}\NormalTok{ x[}\DecValTok{1}\NormalTok{]}
+\NormalTok{    \}}
+    \ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{ (pr }\SpecialCharTok{\textgreater{}=} \DecValTok{1}\NormalTok{) \{}
+\NormalTok{      q[pr\_idx] }\OtherTok{\textless{}{-}}\NormalTok{ x[n]}
+\NormalTok{    \}}
+    \ControlFlowTok{else}\NormalTok{ \{}
+      \ControlFlowTok{if}\NormalTok{ (type }\SpecialCharTok{==} \DecValTok{1}\NormalTok{) \{}
+\NormalTok{        j }\OtherTok{\textless{}{-}} \DecValTok{1} \SpecialCharTok{+} \FunctionTok{pmax}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{pmin}\NormalTok{(n }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{, }\FunctionTok{sum}\NormalTok{(wecdf }\SpecialCharTok{\textless{}=}\NormalTok{ pr)))}
+\NormalTok{        q[pr\_idx] }\OtherTok{\textless{}{-}}\NormalTok{ x[j]}
+\NormalTok{      \}}
+      \ControlFlowTok{else}\NormalTok{ \{}
+\NormalTok{        j }\OtherTok{\textless{}{-}} \DecValTok{1} \SpecialCharTok{+} \FunctionTok{pmax}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{pmin}\NormalTok{(n }\SpecialCharTok{{-}} \DecValTok{2}\NormalTok{, }\FunctionTok{sum}\NormalTok{(wecdf2 }\SpecialCharTok{\textless{}=}\NormalTok{ pr)))}
+\NormalTok{        g }\OtherTok{\textless{}{-}}\NormalTok{ (pr }\SpecialCharTok{{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, wecdf2)[j])}\SpecialCharTok{/}\NormalTok{(wecdf2[j] }\SpecialCharTok{{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }
+\NormalTok{                                                   wecdf2)[j])}
+\NormalTok{        q[pr\_idx] }\OtherTok{\textless{}{-}}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ g) }\SpecialCharTok{*}\NormalTok{ x[j] }\SpecialCharTok{+}\NormalTok{ g }\SpecialCharTok{*}\NormalTok{ x[j }\SpecialCharTok{+} \DecValTok{1}\NormalTok{]}
+\NormalTok{      \}}
+\NormalTok{    \}}
+\NormalTok{  \}}
+\NormalTok{  q}
+\NormalTok{\}}
+
+\CommentTok{\#\textquotesingle{} Compute empirical weighted cumulative distribution}
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\#\textquotesingle{} Version of \textasciigrave{}ggplot2::stat\_ecdf\textasciigrave{} that adds a \textasciigrave{}weights\textasciigrave{} property for each}
+\CommentTok{\#\textquotesingle{} observation, to produce an empirical weighted cumulative distribution function.}
+\CommentTok{\#\textquotesingle{} The empirical cumulative distribution function (ECDF) provides an alternative}
+\CommentTok{\#\textquotesingle{} visualisation of distribution. Compared to other visualisations that rely on}
+\CommentTok{\#\textquotesingle{} density (like [geom\_histogram()]), the ECDF doesn\textquotesingle{}t require any}
+\CommentTok{\#\textquotesingle{} tuning parameters and handles both continuous and discrete variables.}
+\CommentTok{\#\textquotesingle{} The downside is that it requires more training to accurately interpret,}
+\CommentTok{\#\textquotesingle{} and the underlying visual tasks are somewhat more challenging.}
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\# @inheritParams layer}
+\CommentTok{\# @inheritParams geom\_point}
+\CommentTok{\#\textquotesingle{} @param na.rm If \textasciigrave{}FALSE\textasciigrave{} (the default), removes missing values with}
+\CommentTok{\#\textquotesingle{}    a warning.  If \textasciigrave{}TRUE\textasciigrave{} silently removes missing values.}
+\CommentTok{\#\textquotesingle{} @param n if NULL, do not interpolate. If not NULL, this is the number}
+\CommentTok{\#\textquotesingle{}   of points to interpolate with.}
+\CommentTok{\#\textquotesingle{} @param pad If \textasciigrave{}TRUE\textasciigrave{}, pad the ecdf with additional points ({-}Inf, 0)}
+\CommentTok{\#\textquotesingle{}   and (Inf, 1)}
+\CommentTok{\#\textquotesingle{} @section Computed variables:}
+\CommentTok{\#\textquotesingle{} \textbackslash{}describe\{}
+\CommentTok{\#\textquotesingle{}   \textbackslash{}item\{x\}\{x in data\}}
+\CommentTok{\#\textquotesingle{}   \textbackslash{}item\{y\}\{cumulative density corresponding x\}}
+\CommentTok{\#\textquotesingle{} \}}
+\CommentTok{\#\textquotesingle{} @seealso wquantile}
+\CommentTok{\#\textquotesingle{} @export}
+\CommentTok{\#\textquotesingle{} @examples}
+\CommentTok{\#\textquotesingle{} library(ggplot2)}
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\#\textquotesingle{} n \textless{}{-} 100}
+\CommentTok{\#\textquotesingle{} df \textless{}{-} data.frame(}
+\CommentTok{\#\textquotesingle{}   x = c(rnorm(n, 0, 10), rnorm(n, 0, 10)),}
+\CommentTok{\#\textquotesingle{}   g = gl(2, n),}
+\CommentTok{\#\textquotesingle{}   w = c(rep(1/n, n), sort(runif(n))\^{}sqrt(n))}
+\CommentTok{\#\textquotesingle{} )}
+\CommentTok{\#\textquotesingle{} ggplot(df, aes(x, weights = w)) + stat\_ewcdf(geom = "step")}
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\#\textquotesingle{} \# Don\textquotesingle{}t go to positive/negative infinity}
+\CommentTok{\#\textquotesingle{} ggplot(df, aes(x, weights = w)) + stat\_ewcdf(geom = "step", pad = FALSE)}
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\#\textquotesingle{} \# Multiple ECDFs}
+\CommentTok{\#\textquotesingle{} ggplot(df, aes(x, colour = g, weights = w)) + stat\_ewcdf()}
+\CommentTok{\#\textquotesingle{} ggplot(df, aes(x, colour = g, weights = w)) +}
+\CommentTok{\#\textquotesingle{}   stat\_ewcdf() +}
+\CommentTok{\#\textquotesingle{}   facet\_wrap(vars(g), ncol = 1)}
+
+\NormalTok{stat\_ewcdf }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(}\AttributeTok{mapping =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{data =} \ConstantTok{NULL}\NormalTok{,}
+                       \AttributeTok{geom =} \StringTok{"step"}\NormalTok{, }\AttributeTok{position =} \StringTok{"identity"}\NormalTok{,}
+\NormalTok{                       ...,}
+                       \AttributeTok{n =} \ConstantTok{NULL}\NormalTok{,}
+                       \AttributeTok{pad =} \ConstantTok{TRUE}\NormalTok{,}
+                       \AttributeTok{na.rm =} \ConstantTok{FALSE}\NormalTok{,}
+                       \AttributeTok{show.legend =} \ConstantTok{NA}\NormalTok{,}
+                       \AttributeTok{inherit.aes =} \ConstantTok{TRUE}\NormalTok{) \{}
+\NormalTok{  ggplot2}\SpecialCharTok{::}\FunctionTok{layer}\NormalTok{(}
+    \AttributeTok{data =}\NormalTok{ data,}
+    \AttributeTok{mapping =}\NormalTok{ mapping,}
+    \AttributeTok{stat =}\NormalTok{ StatEwcdf,}
+    \AttributeTok{geom =}\NormalTok{ geom,}
+    \AttributeTok{position =}\NormalTok{ position,}
+    \AttributeTok{show.legend =}\NormalTok{ show.legend,}
+    \AttributeTok{inherit.aes =}\NormalTok{ inherit.aes,}
+    \AttributeTok{params =} \FunctionTok{list}\NormalTok{(}
+      \AttributeTok{n =}\NormalTok{ n,}
+      \AttributeTok{pad =}\NormalTok{ pad,}
+      \AttributeTok{na.rm =}\NormalTok{ na.rm,}
+\NormalTok{      ...}
+\NormalTok{    )}
+\NormalTok{  )}
+\NormalTok{\}}
+
+
+\CommentTok{\#\textquotesingle{} @title StatEwcdf ggproto object}
+\CommentTok{\#\textquotesingle{} @name StatEwcdf}
+\CommentTok{\#\textquotesingle{} @rdname StatEwcdf}
+\CommentTok{\#\textquotesingle{} @aliases StatEwcdf}
+\CommentTok{\#\textquotesingle{} @format NULL}
+\CommentTok{\#\textquotesingle{} @usage NULL}
+\CommentTok{\#\textquotesingle{} @export}
+\CommentTok{\#\textquotesingle{} @importFrom ggplot2 aes after\_stat has\_flipped\_aes Stat}
+\ConstantTok{NULL}
+
+\NormalTok{StatEwcdf }\OtherTok{\textless{}{-}}\NormalTok{ ggplot2}\SpecialCharTok{::}\FunctionTok{ggproto}\NormalTok{(}
+  \StringTok{"StatEwcdf"}\NormalTok{, ggplot2}\SpecialCharTok{::}\NormalTok{Stat,}
+  \AttributeTok{required\_aes =} \FunctionTok{c}\NormalTok{(}\StringTok{"x|y"}\NormalTok{, }\StringTok{"weights"}\NormalTok{),}
+  \AttributeTok{dropped\_aes =} \FunctionTok{c}\NormalTok{(}\StringTok{"weights"}\NormalTok{),     }
+  
+  \AttributeTok{default\_aes =}\NormalTok{ ggplot2}\SpecialCharTok{::}\FunctionTok{aes}\NormalTok{(}\AttributeTok{y =}\NormalTok{ ggplot2}\SpecialCharTok{::}\FunctionTok{after\_stat}\NormalTok{(y)),}
+  
+  \AttributeTok{setup\_params =} \ControlFlowTok{function}\NormalTok{(data, params) \{}
+\NormalTok{    params}\SpecialCharTok{$}\NormalTok{flipped\_aes }\OtherTok{\textless{}{-}}
+\NormalTok{      ggplot2}\SpecialCharTok{::}\FunctionTok{has\_flipped\_aes}\NormalTok{(data,}
+\NormalTok{                               params,}
+                               \AttributeTok{main\_is\_orthogonal =} \ConstantTok{FALSE}\NormalTok{,}
+                               \AttributeTok{main\_is\_continuous =} \ConstantTok{TRUE}\NormalTok{)}
+    
+\NormalTok{    has\_x }\OtherTok{\textless{}{-}} \SpecialCharTok{!}\NormalTok{(}\FunctionTok{is.null}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{x) }\SpecialCharTok{\&\&} \FunctionTok{is.null}\NormalTok{(params}\SpecialCharTok{$}\NormalTok{x))}
+\NormalTok{    has\_y }\OtherTok{\textless{}{-}} \SpecialCharTok{!}\NormalTok{(}\FunctionTok{is.null}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{y) }\SpecialCharTok{\&\&} \FunctionTok{is.null}\NormalTok{(params}\SpecialCharTok{$}\NormalTok{y))}
+    \ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\NormalTok{has\_x }\SpecialCharTok{\&\&} \SpecialCharTok{!}\NormalTok{has\_y) \{}
+\NormalTok{      rlang}\SpecialCharTok{::}\FunctionTok{abort}\NormalTok{(}\StringTok{"stat\_ewcdf() requires an x or y aesthetic."}\NormalTok{)}
+\NormalTok{    \}}
+\NormalTok{    has\_weights }\OtherTok{\textless{}{-}} \SpecialCharTok{!}\NormalTok{(}\FunctionTok{is.null}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{weights) }\SpecialCharTok{\&\&} \FunctionTok{is.null}\NormalTok{(params}\SpecialCharTok{$}\NormalTok{weights))}
+    \CommentTok{\#    if (!has\_weights) \{}
+    \CommentTok{\#      rlang::abort("stat\_ewcdf() requires a weights aesthetic.")}
+    \CommentTok{\#    \}}
+    
+\NormalTok{    params}
+\NormalTok{  \},}
+  
+  \AttributeTok{compute\_group =} \ControlFlowTok{function}\NormalTok{(data, scales, }\AttributeTok{n =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{pad =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{flipped\_aes =} \ConstantTok{FALSE}\NormalTok{) \{}
+\NormalTok{    data }\OtherTok{\textless{}{-}} \FunctionTok{flip\_data}\NormalTok{(data, flipped\_aes)}
+    \CommentTok{\# If n is NULL, use raw values; otherwise interpolate}
+    \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{is.null}\NormalTok{(n)) \{}
+\NormalTok{      x }\OtherTok{\textless{}{-}} \FunctionTok{unique}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{x)}
+\NormalTok{    \} }\ControlFlowTok{else}\NormalTok{ \{}
+\NormalTok{      x }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\FunctionTok{min}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{x), }\FunctionTok{max}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{x), }\AttributeTok{length.out =}\NormalTok{ n)}
+\NormalTok{    \}}
+    
+    \ControlFlowTok{if}\NormalTok{ (pad) \{}
+\NormalTok{      x }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\ConstantTok{Inf}\NormalTok{, x, }\ConstantTok{Inf}\NormalTok{)}
+\NormalTok{    \}}
+    \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{is.null}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{weights)) \{}
+\NormalTok{      data\_ecdf }\OtherTok{\textless{}{-}} \FunctionTok{ecdf}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{x)(x)}
+\NormalTok{    \} }\ControlFlowTok{else}\NormalTok{ \{}
+\NormalTok{      data\_ecdf }\OtherTok{\textless{}{-}}
+\NormalTok{        spatstat.geom}\SpecialCharTok{::}\FunctionTok{ewcdf}\NormalTok{(}
+\NormalTok{          data}\SpecialCharTok{$}\NormalTok{x,}
+          \AttributeTok{weights =}\NormalTok{ data}\SpecialCharTok{$}\NormalTok{weights }\SpecialCharTok{/} \FunctionTok{sum}\NormalTok{(}\FunctionTok{abs}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{weights)) }
+\NormalTok{        )(x)}
+\NormalTok{    \}}
+    
+\NormalTok{    df\_ecdf }\OtherTok{\textless{}{-}}\NormalTok{ vctrs}\SpecialCharTok{::}\FunctionTok{new\_data\_frame}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\AttributeTok{x =}\NormalTok{ x, }\AttributeTok{y =}\NormalTok{ data\_ecdf), }\AttributeTok{n =} \FunctionTok{length}\NormalTok{(x))}
+\NormalTok{    df\_ecdf}\SpecialCharTok{$}\NormalTok{flipped\_aes }\OtherTok{\textless{}{-}}\NormalTok{ flipped\_aes}
+\NormalTok{    ggplot2}\SpecialCharTok{::}\FunctionTok{flip\_data}\NormalTok{(df\_ecdf, flipped\_aes)}
+\NormalTok{  \}}
+\NormalTok{)}
+
+
+
+\CommentTok{\# MY ANSWERS}
+
+\CommentTok{\# QUESTION 1}
+
+\CommentTok{\# Load the data}
+\FunctionTok{load}\NormalTok{(}\StringTok{"/Users/orlagh/project01/filament1.rda"}\NormalTok{)}
+
+\CommentTok{\# Plot the data}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ filament1, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ CAD\_Weight, }\AttributeTok{y =}\NormalTok{ Actual\_Weight, }\AttributeTok{color =}\NormalTok{ Material)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{"CAD\_Weight (g)"}\NormalTok{, }\AttributeTok{y =} \StringTok{"Actual\_Weight (g)"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Relationship between CAD\_Weight and Actual\_Weight"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+
+\CommentTok{\# QUESTION 2}
+
+\CommentTok{\# Define function neg\_log\_like}
+\NormalTok{neg\_log\_like }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(beta, data, model) \{}
+\NormalTok{  xi }\OtherTok{\textless{}{-}}\NormalTok{ data}\SpecialCharTok{$}\NormalTok{CAD\_Weight}
+\NormalTok{  yi }\OtherTok{\textless{}{-}}\NormalTok{ data}\SpecialCharTok{$}\NormalTok{Actual\_Weight}
+  \ControlFlowTok{if}\NormalTok{(model }\SpecialCharTok{==} \StringTok{"A"}\NormalTok{) \{}
+\NormalTok{    sigmasq }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(beta[}\DecValTok{3}\NormalTok{] }\SpecialCharTok{+}\NormalTok{ beta[}\DecValTok{4}\NormalTok{] }\SpecialCharTok{*}\NormalTok{ xi)}
+\NormalTok{  \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(model }\SpecialCharTok{==} \StringTok{"B"}\NormalTok{) \{}
+\NormalTok{    sigmasq }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(beta[}\DecValTok{3}\NormalTok{]) }\SpecialCharTok{+} \FunctionTok{exp}\NormalTok{(beta[}\DecValTok{4}\NormalTok{]) }\SpecialCharTok{*}\NormalTok{ xi}\SpecialCharTok{\^{}}\DecValTok{2}
+\NormalTok{  \}}
+  
+\NormalTok{  nll }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\FunctionTok{sum}\NormalTok{(}\FunctionTok{dnorm}\NormalTok{(yi, }\AttributeTok{mean =}\NormalTok{ beta[}\DecValTok{1}\NormalTok{] }\SpecialCharTok{+}\NormalTok{ beta[}\DecValTok{2}\NormalTok{] }\SpecialCharTok{*}\NormalTok{ xi, }\AttributeTok{sd =} \FunctionTok{sqrt}\NormalTok{(sigmasq), }\AttributeTok{log =} \ConstantTok{TRUE}\NormalTok{))}
+  \FunctionTok{return}\NormalTok{(nll)}
+\NormalTok{\}}
+
+\CommentTok{\# Define function filament1\_estimate}
+\NormalTok{filament1\_estimate }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(data, model) \{}
+  \CommentTok{\# Define initial values for beta}
+  \ControlFlowTok{if}\NormalTok{(model }\SpecialCharTok{==} \StringTok{"A"}\NormalTok{) \{}
+\NormalTok{    init\_beta }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{0.1}\NormalTok{, }\FloatTok{1.07}\NormalTok{, }\SpecialCharTok{{-}}\DecValTok{2}\NormalTok{, }\FloatTok{0.05}\NormalTok{)}
+\NormalTok{  \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(model }\SpecialCharTok{==} \StringTok{"B"}\NormalTok{) \{}
+\NormalTok{    init\_beta }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{0.15}\NormalTok{, }\FloatTok{1.07}\NormalTok{, }\SpecialCharTok{{-}}\FloatTok{13.5}\NormalTok{, }\SpecialCharTok{{-}}\FloatTok{6.5}\NormalTok{)}
+\NormalTok{  \}}
+  
+  \CommentTok{\# Run optimization}
+\NormalTok{  fit }\OtherTok{\textless{}{-}} \FunctionTok{optim}\NormalTok{(}\AttributeTok{par =}\NormalTok{ init\_beta, }\AttributeTok{fn =}\NormalTok{ neg\_log\_like, }\AttributeTok{data =}\NormalTok{ filament1, }\AttributeTok{model =}\NormalTok{ model, }\AttributeTok{method =} \StringTok{"BFGS"}\NormalTok{, }\AttributeTok{hessian =} \ConstantTok{TRUE}\NormalTok{)}
+  
+  \CommentTok{\# Return best set of parameters found and estimate of the Hessian}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\AttributeTok{parameters =}\NormalTok{ fit}\SpecialCharTok{$}\NormalTok{par, }\AttributeTok{hessian =}\NormalTok{ fit}\SpecialCharTok{$}\NormalTok{hessian))}
+\NormalTok{\}}
+
+\CommentTok{\# Estimate Model A}
+\NormalTok{fit\_A }\OtherTok{\textless{}{-}} \FunctionTok{filament1\_estimate}\NormalTok{(filament1, }\StringTok{"A"}\NormalTok{)}
+
+\CommentTok{\# Estimate Model B}
+\NormalTok{fit\_B }\OtherTok{\textless{}{-}} \FunctionTok{filament1\_estimate}\NormalTok{(filament1, }\StringTok{"B"}\NormalTok{)}
+
+\CommentTok{\# Print the estimated parameters}
+\FunctionTok{print}\NormalTok{(fit\_A)}
+\FunctionTok{print}\NormalTok{(fit\_B)}
+
+
+
+
+
+
+\CommentTok{\# Question 3}
+
+\FunctionTok{library}\NormalTok{(mvtnorm)}
+
+\CommentTok{\# Poisson parameter confidence interval A}
+
+\NormalTok{CI\_A }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(y, }\AttributeTok{alpha =} \FloatTok{0.05}\NormalTok{) \{}
+\NormalTok{  n }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(y)}
+\NormalTok{  lambda\_hat }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(y)}
+\NormalTok{  z }\OtherTok{\textless{}{-}} \FunctionTok{qnorm}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ alpha }\SpecialCharTok{/} \DecValTok{2}\NormalTok{, alpha }\SpecialCharTok{/} \DecValTok{2}\NormalTok{))}
+\NormalTok{  lambda\_hat }\SpecialCharTok{{-}}\NormalTok{ z }\SpecialCharTok{*} \FunctionTok{sqrt}\NormalTok{(lambda\_hat }\SpecialCharTok{/}\NormalTok{ n)}
+\NormalTok{\}}
+
+\NormalTok{estimate\_coverage }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(CI\_method, }\AttributeTok{N =} \DecValTok{10000}\NormalTok{,}
+                              \AttributeTok{alpha =} \FloatTok{0.1}\NormalTok{,}
+                              \AttributeTok{n =} \DecValTok{2}\NormalTok{,}
+                              \AttributeTok{lambda =} \DecValTok{3}\NormalTok{) \{}
+\NormalTok{  cover }\OtherTok{\textless{}{-}} \DecValTok{0}
+  \ControlFlowTok{for}\NormalTok{ (loop }\ControlFlowTok{in} \FunctionTok{seq\_len}\NormalTok{(N)) \{}
+\NormalTok{    y }\OtherTok{\textless{}{-}} \FunctionTok{rpois}\NormalTok{(n, lambda)}
+\NormalTok{    ci }\OtherTok{\textless{}{-}} \FunctionTok{CI\_method}\NormalTok{(y, alpha)}
+\NormalTok{    cover }\OtherTok{\textless{}{-}}\NormalTok{ cover }\SpecialCharTok{+}\NormalTok{ ((ci[}\DecValTok{1}\NormalTok{] }\SpecialCharTok{\textless{}=}\NormalTok{ lambda) }\SpecialCharTok{\&\&}\NormalTok{ (lambda }\SpecialCharTok{\textless{}=}\NormalTok{ ci[}\DecValTok{2}\NormalTok{]))}
+\NormalTok{  \}}
+\NormalTok{  cover }\SpecialCharTok{/}\NormalTok{ N}
+\NormalTok{\}}
+
+\CommentTok{\# 3.1 Log{-}density for prior distribution}
+
+\NormalTok{log\_prior\_density }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(theta, params) \{ }
+    \FunctionTok{dnorm}\NormalTok{(theta[}\DecValTok{1}\NormalTok{], }\AttributeTok{sd =} \FunctionTok{sqrt}\NormalTok{(params[}\DecValTok{1}\NormalTok{]), }\AttributeTok{log =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{dnorm}\NormalTok{(theta[}\DecValTok{2}\NormalTok{], }\AttributeTok{mean =} \DecValTok{1}\NormalTok{, }\AttributeTok{sd =} \FunctionTok{sqrt}\NormalTok{(params[}\DecValTok{2}\NormalTok{]), }\AttributeTok{log =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{dlogexp}\NormalTok{(theta[}\DecValTok{3}\NormalTok{], }\AttributeTok{rate =}\NormalTok{ params[}\DecValTok{3}\NormalTok{], }\AttributeTok{log =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{dlogexp}\NormalTok{(theta[}\DecValTok{4}\NormalTok{], }\AttributeTok{rate =}\NormalTok{ params[}\DecValTok{4}\NormalTok{], }\AttributeTok{log =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{\}}
+
+\CommentTok{\# 3.2 Observation log{-}likelihood}
+
+\NormalTok{log\_like }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(theta, x, y) \{ }\FunctionTok{sum}\NormalTok{(}\FunctionTok{dnorm}\NormalTok{(y,}
+   \AttributeTok{mean =}\NormalTok{ theta[}\DecValTok{1}\NormalTok{] }\SpecialCharTok{+}\NormalTok{ theta[}\DecValTok{2}\NormalTok{] }\SpecialCharTok{*}\NormalTok{ x,}
+   \AttributeTok{sd =} \FunctionTok{sqrt}\NormalTok{(}\FunctionTok{exp}\NormalTok{(theta[}\DecValTok{3}\NormalTok{]) }\SpecialCharTok{+} \FunctionTok{exp}\NormalTok{(theta[}\DecValTok{4}\NormalTok{]) }\SpecialCharTok{*}\NormalTok{ x}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{),}
+   \AttributeTok{log =} \ConstantTok{TRUE}
+\NormalTok{)) \}}
+
+\CommentTok{\# 3.3 Log{-}density for the posterior distribution}
+
+\NormalTok{log\_posterior\_density }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(theta, x, y, params) \{ }
+  \FunctionTok{log\_prior\_density}\NormalTok{(theta, params) }\SpecialCharTok{+}
+    \FunctionTok{log\_like}\NormalTok{(theta, x, y)}
+\NormalTok{\}}
+
+\CommentTok{\# 3.4 Posterior mode}
+
+\NormalTok{posterior\_mode }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(theta\_start, x, y, params) \{ }
+\NormalTok{  opt }\OtherTok{\textless{}{-}} \FunctionTok{optim}\NormalTok{(theta\_start, log\_posterior\_density,}
+      \AttributeTok{x =}\NormalTok{ x, }\AttributeTok{y =}\NormalTok{ y, }\AttributeTok{params =}\NormalTok{ params,}
+      \AttributeTok{control =} \FunctionTok{list}\NormalTok{(}\AttributeTok{fnscale =} \SpecialCharTok{{-}}\DecValTok{1}\NormalTok{),}
+      \AttributeTok{hessian =} \ConstantTok{TRUE}
+\NormalTok{)}
+\ControlFlowTok{if}\NormalTok{ (opt}\SpecialCharTok{$}\NormalTok{convergence }\SpecialCharTok{!=} \DecValTok{0}\NormalTok{) \{}
+  \FunctionTok{warning}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}
+    \StringTok{"Optimisation may not have been successful; \textquotesingle{}convergence\textquotesingle{} = "}\NormalTok{,}
+\NormalTok{    opt}\SpecialCharTok{$}\NormalTok{convergence}
+\NormalTok{  ))}
+\NormalTok{\}}
+\ControlFlowTok{if}\NormalTok{ (}\FunctionTok{any}\NormalTok{(}\FunctionTok{eigen}\NormalTok{(opt}\SpecialCharTok{$}\NormalTok{hessian)}\SpecialCharTok{$}\NormalTok{values }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{)) \{}
+  \FunctionTok{warning}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"Positive eigenvalues detected in the hessian; result isn\textquotesingle{}t a local maximum"}\NormalTok{))}
+\NormalTok{  \}}
+  \FunctionTok{list}\NormalTok{(}
+    \AttributeTok{mode =}\NormalTok{ opt}\SpecialCharTok{$}\NormalTok{par,}
+    \AttributeTok{hessian =}\NormalTok{ opt}\SpecialCharTok{$}\NormalTok{hessian,}
+    \AttributeTok{S =} \FunctionTok{solve}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{opt}\SpecialCharTok{$}\NormalTok{hessian)}
+\NormalTok{) \}}
+
+\CommentTok{\# 3.6 Importance sampler}
+
+\NormalTok{do\_importance }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(N, mu, S, x, y, }\AttributeTok{params =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{)) \{ }
+\NormalTok{  samples }\OtherTok{\textless{}{-}}\NormalTok{ mvtnorm}\SpecialCharTok{::}\FunctionTok{rmvnorm}\NormalTok{(N, }\AttributeTok{mean =}\NormalTok{ mu, }\AttributeTok{sigma =}\NormalTok{ S)}
+\NormalTok{log\_weights }\OtherTok{\textless{}{-}} \FunctionTok{numeric}\NormalTok{(N)}
+\ControlFlowTok{for}\NormalTok{ (k }\ControlFlowTok{in} \FunctionTok{seq\_len}\NormalTok{(N)) \{}
+\NormalTok{    log\_weights[k] }\OtherTok{\textless{}{-}}
+      \FunctionTok{log\_posterior\_density}\NormalTok{(samples[k, ], }\AttributeTok{x =}\NormalTok{ x, }\AttributeTok{y =}\NormalTok{ y, }\AttributeTok{params =}\NormalTok{ params) }\SpecialCharTok{{-}}
+\NormalTok{      mvtnorm}\SpecialCharTok{::}\FunctionTok{dmvnorm}\NormalTok{(samples[k, ], }\AttributeTok{mean =}\NormalTok{ mu, }\AttributeTok{sigma =}\NormalTok{ S, }\AttributeTok{log =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{\}}
+  \CommentTok{\# Normalise the weights}
+\NormalTok{  log\_weights }\OtherTok{\textless{}{-}}\NormalTok{ log\_weights }\SpecialCharTok{{-}} \FunctionTok{log\_sum\_exp}\NormalTok{(log\_weights)}
+  \CommentTok{\# Convert theta to beta{-}values}
+\NormalTok{  samples[, }\DecValTok{3}\SpecialCharTok{:}\DecValTok{4}\NormalTok{] }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(samples[, }\DecValTok{3}\SpecialCharTok{:}\DecValTok{4}\NormalTok{])}
+  \FunctionTok{colnames}\NormalTok{(samples) }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(}\StringTok{"beta"}\NormalTok{, }\FunctionTok{seq\_len}\NormalTok{(}\FunctionTok{ncol}\NormalTok{(samples)))}
+  \FunctionTok{cbind}\NormalTok{(}\FunctionTok{as.data.frame}\NormalTok{(samples),}
+        \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{log\_weights =}\NormalTok{ log\_weights))}
+\NormalTok{\}}
+
+\CommentTok{\# Log{-}Exponential density}
+
+\NormalTok{dlogexp }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x, }\AttributeTok{rate =} \DecValTok{1}\NormalTok{, }\AttributeTok{log =} \ConstantTok{FALSE}\NormalTok{) \{ }
+\NormalTok{  result }\OtherTok{\textless{}{-}} \FunctionTok{log}\NormalTok{(rate) }\SpecialCharTok{+}\NormalTok{ x }\SpecialCharTok{{-}}\NormalTok{ rate }\SpecialCharTok{*} \FunctionTok{exp}\NormalTok{(x)}
+\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\NormalTok{log) \{}
+\NormalTok{result }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(result) \}}
+\NormalTok{result \}}
+
+\CommentTok{\# Log{-}Sum{-}Exp}
+
+\NormalTok{log\_sum\_exp }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) \{}
+\NormalTok{  max\_x }\OtherTok{\textless{}{-}} \FunctionTok{max}\NormalTok{(x, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{) }
+\NormalTok{  max\_x }\SpecialCharTok{+} \FunctionTok{log}\NormalTok{(}\FunctionTok{sum}\NormalTok{(}\FunctionTok{exp}\NormalTok{(x }\SpecialCharTok{{-}}\NormalTok{ max\_x)))}
+\NormalTok{\}}
+
+
+\FunctionTok{library}\NormalTok{(mvtnorm)}
+
+\CommentTok{\# Define some example data}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{42}\NormalTok{)}
+\NormalTok{theta\_example }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.5}\NormalTok{, }\DecValTok{1}\NormalTok{, }\FunctionTok{log}\NormalTok{(}\FloatTok{0.5}\NormalTok{), }\FunctionTok{log}\NormalTok{(}\FloatTok{1.5}\NormalTok{))}
+\NormalTok{x\_example }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\DecValTok{100}\NormalTok{)}
+\NormalTok{y\_example }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\DecValTok{100}\NormalTok{)}
+
+\CommentTok{\# Define the parameters for the prior distribution}
+\NormalTok{params\_example }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{)}
+
+\CommentTok{\# Run the log\_prior\_density function with the example data}
+\FunctionTok{log\_prior\_density}\NormalTok{(theta\_example, params\_example)}
+
+\CommentTok{\# Run the log\_like function with the example data}
+\FunctionTok{log\_like}\NormalTok{(theta\_example, x\_example, y\_example)}
+
+\CommentTok{\# Run the log\_posterior\_density function with the example data}
+\FunctionTok{log\_posterior\_density}\NormalTok{(theta\_example, x\_example, y\_example, params\_example)}
+
+\CommentTok{\# Run the posterior\_mode function with the example data}
+\FunctionTok{posterior\_mode}\NormalTok{(theta\_example, x\_example, y\_example, params\_example)}
+
+\CommentTok{\# Define the mean vector and covariance matrix for the importance distribution}
+\NormalTok{mu\_example }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\NormalTok{S\_example }\OtherTok{\textless{}{-}} \FunctionTok{diag}\NormalTok{(}\DecValTok{4}\NormalTok{)}
+
+\CommentTok{\# Run the do\_importance function with the example data}
+\FunctionTok{do\_importance}\NormalTok{(}\DecValTok{100}\NormalTok{, mu\_example, S\_example, x\_example, y\_example, params\_example)}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}

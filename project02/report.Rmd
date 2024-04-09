@@ -1,0 +1,155 @@
+---
+title: 'Project 2'
+author: "Orlagh Keane,s2084384"
+output:
+  html_document:
+    number_sections: yes
+  pdf_document:
+    number_sections: yes
+header-includes:
+  - \newcommand{\bm}[1]{\boldsymbol{#1}}
+  - \newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+---
+
+```{r setup, include = FALSE}
+# Modify this setup code chunk to set options
+# or add extra packages etc if needed.
+# See the project instructions for more details
+# on what code to show, and where/how.
+
+# Set default code chunk options
+knitr::opts_chunk$set(
+  echo = TRUE,
+  eval = TRUE
+)
+
+suppressPackageStartupMessages(library(tidyverse))
+theme_set(theme_bw())
+
+# To give the same random number sequence every time the document is knit:ed,
+# making it easier to discuss the specific numbers in the text:
+set.seed(12345L)
+```
+
+```{r code=readLines("code.R"), eval=TRUE, echo=FALSE, results='hide'}
+# Do not change this code chunk
+# Load function definitions
+source("code.R")
+```
+
+# Part 1: 3D printer
+```{r code=readLines("code.R"), eval=TRUE, echo=FALSE, results='hide'}
+# Load the filament1 dataset
+load(file = "filament1.rda")
+```
+
+a) A function filament1_predict computes predictive distributions and 95% prediction intervals for a new dataset, the function returns a data.frame with variables mean, sd, lwr, and upr, summarizing the predictive distribution for each row of the new data. 
+
+Using the function to compute probabilistic predictions of Actual_Weight using the two estimated models and the filament1 as new data. Using a level of significance of 5% for computing the prediction intervals, the predictions are represented visually together with the observed data.
+```{r eval=TRUE, echo=TRUE}
+load("filament1.rda")
+# Predict using filament1_predict function
+est_A <- filament1_estimate(data = filament1, model = "A")
+est_B <- filament1_estimate(data = filament1, model = "B")
+
+pred_filament1_A <- filament1_predict(est_A, newdata = filament1, model = "A")
+pred_filament1_B <- filament1_predict(est_B, newdata = filament1, model = "B")
+
+ggplot(rbind(cbind(pred_filament1_A, filament1, Model = "A"),cbind(pred_filament1_B, filament1, Model = "B")), mapping=aes(CAD_Weight))+
+  geom_line(aes(y=pred_mean, col= Model)) +
+  geom_ribbon(aes(ymin=lwr, ymax=upr, fill=Model), alpha=0.25) +
+  geom_point(aes(y=Actual_Weight), data = filament1)
+
+```
+
+
+
+
+c) The function leave1out performs leave-one-out cross-validation for the selected model for each observation i = 1, . . . , N . In this function, it first estimates the model parameters using {(xj , yj ), j ̸= i}, computse the prediction information based on xi for prediction model Fi, and then computes the required scores S(Fi,yi). 
+
+The output is a data.frame that extends the original data frame with four additional columns pred_mean, pred_sd, se and ds of leave-one-out prediction means, standard deviations, and prediction scores. leave1out obtains average leave-one-out scores S(Fi,yi) for each model and type of score for filament1 data. 
+
+```{r eval=TRUE, echo=TRUE}
+leave1out_A <- leave1out(filament1, "A")
+leave1out_B <- leave1out(filament1, "B")
+
+SE_data <- data.frame(CAD_Weight = leave1out_A$CAD_Weight, se_A = leave1out_A$se, se_B = leave1out_B$se)
+
+ggplot() +
+  geom_point(aes(CAD_Weight, se_A, colour = "A"), data = SE_data, alpha = 0.7) +
+  geom_point(aes(CAD_Weight, se_B, colour = "B"), data = SE_data, alpha = 0.7) +
+  labs(title = "Squared Error (SE) scores comparison", x = "CAD_Weight", y = "SE Score")
+
+DS_data <- data.frame(CAD_Weight = leave1out_A$CAD_Weight, ds_A = leave1out_A$ds, ds_B = leave1out_B$ds)
+
+ggplot() +
+  geom_point(aes(CAD_Weight, ds_A, colour = "A"), data = DS_data, alpha = 0.7) +
+  geom_point(aes(CAD_Weight, ds_B, colour = "B"), data = DS_data, alpha = 0.7) +
+  labs(title = "Dawid-Sebastiani (DS) scores comparison", x = "CAD_Weight", y = "DS Score") 
+```
+
+The first graph, which represents the Squared Error scores, indicates that both models perform similarly for smaller CAD_Weights, with lower SE scores suggesting better accuracy. However, as the CAD_Weights increase, the SE scores for the two models diverge more significantly. This implies that the models' predictions are more accurate for lighter weights compared to heavier ones.
+
+For the Dawid-Sebastiani scores, the plot reveals that the discrepancy between the two models is more pronounced across all CAD_Weights. Specifically, the DS score tends to increase as the CAD_Weights increase. The negative DS scores indicate that the observed data is not fitting the model's predictions well, possibly, the model is not a good fit for the data.
+
+
+d) A Monte Carlo estimate of the p-value, testing the exchangeability between model predictions from A and B against the alternative hypothesis that B is better than A, and the Monte Carlo standard errors are presented below.    
+
+
+```{r eval=TRUE, echo=TRUE}
+score_diff <- data.frame(se = SE_data$se_A - SE_data$se_B, ds = DS_data$ds_A - DS_data$ds_B)
+statistic0 <- score_diff %>% summarise(se = mean(se), ds = mean(ds))
+
+J <- 10000
+statistic <- data.frame(se = numeric(J), ds = numeric(J))
+
+for (loop in seq_len(J)) {
+  random_sign <- sample(c(-1, 1), size = nrow(score_diff), replace = TRUE)
+  statistic[loop, ] <- score_diff %>% summarise(se = mean(random_sign * se), ds = mean(random_sign * ds))
+}
+
+p_values <- statistic %>%
+  summarise(se = mean(se > statistic0$se), ds = mean(ds > statistic0$ds))
+knitr::kable(p_values, caption = "Monte Carlo estimate of the p-value")
+
+se_se <- sqrt((p_values$se * (1 - p_values$se)) / J)
+se_ds <- sqrt((p_values$ds * (1 - p_values$ds)) / J)
+
+knitr::kable(data.frame(se_se = se_se, se_ds = se_ds), caption = "Monte Carlo standard errors")
+
+```
+A high p-value for the SE score of 0.4989 suggests that the differences in predictions between models A and B are not statistically significant. This indicates that the two models are largely exchangeable with respect to the SE score.
+
+A lower p-value for the DS score of 0.0436 suggests that the differences in predictions between models A and B are statistically significant. This implies that the models are not entirely exchangeable with respect to the DS score.
+
+While the two scores present contrasting results, it might suggest that the observations are not best suited for a DS scoring method.
+
+The standard errors for both SE and DS scores are relatively low, further supporting this statistical significance. Therefore, model B does appear to be better at predicting the outcomes compared to model A for the given data.
+
+
+
+# Part 2: Archaeology in the Baltic sea
+
+These are the approximate values for the Monte Carlo integration method.
+
+```{r eval=TRUE, echo=TRUE}
+result <- estimate(y = c(237, 256), xi = 1/1001, a = 0.5, b = 0.5, K = 10000)
+knitr::kable(result)
+```
+
+The Monte Carlo integration estimated values that make some sense for the priors and the context. 
+The estimate of 982 individuals is fairly close to the 1000 that the archaeologist first thought there would have been.
+
+The estimated phi value of approximately 0.374 suggests that the probability of finding a femur is estimated to be around 37.4% which is much less than the archaeologist expected at 50%. 
+
+The very low value of p_y of 0.0000079 indicates that the observed data is quite unlikely under the assumed prior distributions.
+
+The evidence suggests that the actual values of N and phi might differ a lot from the initial assumptions, and therefore a different analysis might be better suited.
+
+
+
+# Code appendix
+
+```{r code=readLines("code.R"), eval=FALSE, echo=TRUE}
+# Do not change this code chunk
+```
